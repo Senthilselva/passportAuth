@@ -11,7 +11,7 @@ var methodOverride = require('method-override'); // for deletes in express
 var debug = require('debug')('express-example');
 
 // Our model controllers (rather than routes)
-//var application_controller = require('./controllers/applicationControllers');
+var application_controller = require('./controllers/applicationControllers');
 //var employee_controller = require('./controllers/employeeControllers');
 
 // instantiate our app
@@ -37,7 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//app.use('/', application_controller);
+app.use('/', application_controller);
 //app.use('/employee', employee_controller);
 
 // catch 404 and forward to error handler
