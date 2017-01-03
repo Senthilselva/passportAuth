@@ -42,8 +42,9 @@ console.log("here" + salt)
 
 router.post('/login', 
   passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
+  // passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
   function(req, res) {
-    res.send("logged in");
+    res.json(req.session);
   });
 
 

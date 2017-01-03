@@ -12,7 +12,7 @@ module.exports = function(passport) {
           'userName': username
         }
       }).then(function (employee) {
-        console.log(employee.password)
+        //console.log(employee.password)
         if (employee == null) {
           return done(null, false, { message: 'Incorrect credentials.' })
         }
