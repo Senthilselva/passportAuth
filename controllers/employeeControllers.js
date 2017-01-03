@@ -4,6 +4,11 @@ var models  = require('../models');
 var router  = express.Router();
 var path = require('path');
 
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
+var setupPassport = require('../config/passport'),
+    flash = require('connect-flash');
+
 router.post('/create', function(req,res) {
 	console.log("inside create");
 	var firstName = req.body.firstName;
@@ -21,7 +26,7 @@ console.log("here" + salt)
   		lastName : lastName,
   		userName : userName,
   		salt : salt,
-  		password : password
+  		password : hashedPassword
   	}
   	console.log(JSON.stringify(newEmployee))
   	models.Employee.create(newEmployee).then(function(){
@@ -35,4 +40,25 @@ console.log("here" + salt)
 
 });
 
+router.post('/login', 
+  passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
+  function(req, res) {
+    res.send("logged in");
+  });
+
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.send('not logged in');
+}
+
+router.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
 module.exports = router;

@@ -1,11 +1,25 @@
 //Dependencies
 // ============
 var express = require('express');
+// instantiate our app
+var app = express();
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser'); // for working with cookies
 var bodyParser = require('body-parser');
+var passport = require('passport');
+// pass passport for configuration
+
+var setupPassport = require('./config/passport')(passport),
+    flash = require('connect-flash');
+
+     app.use(passport.initialize());
+     app.use(passport.session());
+
+    
+
 var session = require('express-session'); 
 var methodOverride = require('method-override'); // for deletes in express
 var debug = require('debug')('express-example');
@@ -17,8 +31,7 @@ var employee_controller = require('./controllers/employeeControllers');
 
 
 
-// instantiate our app
-var app = express();
+
 
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(process.cwd() + '/public'));
@@ -29,10 +42,6 @@ app.use(methodOverride('_method'))
 //allow sessions
 app.use(session({ secret: 'app', cookie: { maxAge: 60000 }}));
 app.use(cookieParser());
-
-// app.use(passport.initialize());
- //app.use(passport.session()); // persistent login sessions
- //app.use(flash()); // use connect-flash for flash messages stored in session
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/assets/img/favicon.ico'));
@@ -45,6 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', application_controller);
 app.use('/employee', employee_controller);
+app.use(flash())
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
