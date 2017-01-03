@@ -9,10 +9,13 @@ var bodyParser = require('body-parser');
 var session = require('express-session'); 
 var methodOverride = require('method-override'); // for deletes in express
 var debug = require('debug')('express-example');
+//var passport = require("passport");
 
 // Our model controllers (rather than routes)
 var application_controller = require('./controllers/applicationControllers');
-//var employee_controller = require('./controllers/employeeControllers');
+var employee_controller = require('./controllers/employeeControllers');
+
+
 
 // instantiate our app
 var app = express();
@@ -27,6 +30,9 @@ app.use(methodOverride('_method'))
 app.use(session({ secret: 'app', cookie: { maxAge: 60000 }}));
 app.use(cookieParser());
 
+// app.use(passport.initialize());
+ //app.use(passport.session()); // persistent login sessions
+ //app.use(flash()); // use connect-flash for flash messages stored in session
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/assets/img/favicon.ico'));
@@ -38,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', application_controller);
-//app.use('/employee', employee_controller);
+app.use('/employee', employee_controller);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
