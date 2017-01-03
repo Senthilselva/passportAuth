@@ -44,7 +44,9 @@ router.post('/login',
   passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
   // passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
   function(req, res) {
-    res.json(req.session);
+    console.log(JSON.stringify(req.user));
+    //console.log(JSON.stringify(res))
+    res.json(req.user);
   });
 
 
