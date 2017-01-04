@@ -11,10 +11,10 @@ var cookieParser = require('cookie-parser'); // for working with cookies
 var bodyParser = require('body-parser');
 var passport = require('passport');
 // pass passport for configuration
+var flash = require('connect-flash');
+    app.use(flash())
 
-var setupPassport = require('./config/passport')(passport),
-    flash = require('connect-flash');
-
+var setupPassport = require('./config/passport')(passport);
      app.use(passport.initialize());
      app.use(passport.session());
 
@@ -54,7 +54,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', application_controller);
 app.use('/employee', employee_controller);
-app.use(flash())
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

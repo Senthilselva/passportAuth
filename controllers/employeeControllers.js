@@ -6,8 +6,7 @@ var path = require('path');
 
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
-var setupPassport = require('../config/passport'),
-    flash = require('connect-flash');
+var setupPassport = require('../config/passport');
 
 router.post('/create', function(req,res) {
 	console.log("inside create");
@@ -18,8 +17,8 @@ router.post('/create', function(req,res) {
 	var password =req.body.password;
 	console.log(firstName)
 	var salt = bcrypt.genSaltSync(10);
-  	var hashedPassword = bcrypt.hashSync(password, salt);
-console.log("here" + salt)
+  var hashedPassword = bcrypt.hashSync(password, salt);
+  console.log("here" + salt)
 
   	var newEmployee = {
   		firstName : firstName,
@@ -29,7 +28,8 @@ console.log("here" + salt)
   		password : hashedPassword
   	}
   	console.log(JSON.stringify(newEmployee))
-  	models.Employee.create(newEmployee).then(function(){
+  	
+    models.Employee.create(newEmployee).then(function(){
   		console.log("Employee Created")
   		res.send("Employee Created")
   	}).catch(function(error) {
@@ -41,8 +41,13 @@ console.log("here" + salt)
 });
 
 router.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
+  //passport.authenticate('local', { failureRedirect: '/register' }),
   // passport.authenticate('local', { failureRedirect: '/register' , failureFlash: true}),
+   passport.authenticate('local', { 
+      failureRedirect: '/login',
+      failureFlash: true
+    //  failureFlash: 'Invalid username or password.'
+    }),
   function(req, res) {
     console.log(JSON.stringify(req.user));
     //console.log(JSON.stringify(res))
